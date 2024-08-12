@@ -1,10 +1,18 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import express from "express";
+import morgan from "morgan";
+
+import express, { type Request, type Response } from "express";
 const app = express();
 
-import connectDB from "@/utils/db/db-connect";
+import connectDB from "@/utils/db-connect";
+
+app.use(process.env.ENVIRONMENT === "DEV" ? morgan("dev") : morgan("common"));
+
+app.get("/", (req: Request, res: Response) => {
+	res.send("Hello there");
+});
 
 const port = process.env.PORT || 3000;
 const start = async () => {
