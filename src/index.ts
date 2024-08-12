@@ -12,6 +12,7 @@ import xssClean from "xss-clean";
 import helmet from "helmet";
 import cors from "cors";
 import mongoSanitize from "express-mongo-sanitize";
+import cookieParser from "cookie-parser";
 
 // Logging
 app.use(process.env.ENVIRONMENT === "DEV" ? morgan("dev") : morgan("common"));
@@ -30,6 +31,10 @@ app.use(helmet());
 app.use(cors());
 app.use(xssClean());
 app.use(mongoSanitize());
+
+// json body and cookie parser
+app.use(express.json());
+app.use(cookieParser(process.env.JWT_SECRET));
 
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello there");
