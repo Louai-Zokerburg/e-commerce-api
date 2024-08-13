@@ -1,0 +1,55 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"lineWidth": 120,
+		"ignore": [
+			"node_modules/*",
+			"*.config.*",
+			"*.json",
+			"tsconfig.json",
+			".turbo",
+			"dist",
+			".next",
+			"build",
+			".docusaurus"
+		]
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"jsxQuoteStyle": "single",
+			"trailingCommas": "none",
+			"semicolons": "asNeeded",
+			"arrowParentheses": "asNeeded",
+			"bracketSameLine": false
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": {
+				"noNonNullAssertion": "off"
+			},
+			"suspicious": {
+				"noExplicitAny": "off",
+				"noArrayIndexKey": "off"
+			},
+			"a11y": {
+				"useKeyWithClickEvents": "off"
+			},
+			"correctness": {
+				"noUnusedVariables": "error"
+			}
+		},
+		"ignore": ["node_modules/*", "dist", ".next", "build", ".docusaurus"]
+	},
+	"files": {
+		"ignore": [".content-collections"]
+	}
+}
