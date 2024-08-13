@@ -16,17 +16,19 @@ import mongoSanitize from 'express-mongo-sanitize'
 import helmet from 'helmet'
 import xssClean from 'xss-clean'
 
+// Express app
 const app = express()
+
 // Logging
 app.use(process.env.NODE_ENV === 'development' ? morgan('dev') : morgan('common'))
 
 // Rate Limiting
 app.set('trust proxy', 1)
 app.use(
-	rateLimit({
-		windowMs: 15 * 60 * 1000,
-		max: 60
-	})
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 60
+  })
 )
 
 // Security
@@ -43,17 +45,17 @@ app.use(cookieParser(process.env.JWT_SECRET))
 app.use('/api/v1/auth', authRouter)
 
 app.get('/', (_req: Request, res: Response) => {
-	res.send('Hello there')
+  res.send('Hello there')
 })
 
 const port = process.env.PORT || 3000
 const start = async () => {
-	try {
-		await connectDB(process.env.MONGO_URI || '')
-		app.listen(port, () => console.log(`Server is listening on port ${port}...`))
-	} catch (error) {
-		console.log(error)
-	}
+  try {
+    await connectDB(process.env.MONGO_URI || '')
+    app.listen(port, () => console.log(`Server is listening on port ${port}...`))
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 start()
