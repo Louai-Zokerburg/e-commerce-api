@@ -8,6 +8,12 @@ export interface TUser extends Document {
   comparePassword: (candidatePassword: string) => Promise<boolean>
 }
 
+export interface TUserPayload {
+  name: string
+  userId: string
+  role: string
+}
+
 export interface TTokenUser {
   name: string
   userId: string
