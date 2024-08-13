@@ -6,6 +6,7 @@ import 'express-async-errors'
 import morgan from 'morgan'
 
 import { router as authRouter } from '@/routers/auth'
+import { router as usersRouter } from '@/routers/user'
 import connectDB from '@/utils/db-connect'
 import rateLimit from 'express-rate-limit'
 
@@ -45,6 +46,7 @@ app.use(cookieParser(process.env.JWT_SECRET))
 
 // Routers
 app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/user', usersRouter)
 
 app.use(notFound)
 app.use(errorHandlerMiddleware)
