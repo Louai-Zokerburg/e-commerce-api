@@ -1,55 +1,59 @@
-import dotenv from "dotenv";
-dotenv.config();
+import dotenv from 'dotenv'
+dotenv.config()
 
-import morgan from "morgan";
+import 'express-async-errors'
 
-import express, { type Request, type Response } from "express";
-const app = express();
+import morgan from 'morgan'
 
-import rateLimit from "express-rate-limit";
-import connectDB from "@/utils/db-connect";
-import xssClean from "xss-clean";
-import helmet from "helmet";
-import cors from "cors";
-import mongoSanitize from "express-mongo-sanitize";
-import cookieParser from "cookie-parser";
+import { router as authRouter } from '@/routers/auth'
+import connectDB from '@/utils/db-connect'
+import rateLimit from 'express-rate-limit'
 
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import express, { type Request, type Response } from 'express'
+import mongoSanitize from 'express-mongo-sanitize'
+import helmet from 'helmet'
+import xssClean from 'xss-clean'
+
+const app = express()
 // Logging
-app.use(process.env.ENVIRONMENT === "DEV" ? morgan("dev") : morgan("common"));
+app.use(process.env.NODE_ENV === 'development' ? morgan('dev') : morgan('common'))
 
 // Rate Limiting
-app.set("trust proxy", 1);
+app.set('trust proxy', 1)
 app.use(
 	rateLimit({
 		windowMs: 15 * 60 * 1000,
-		max: 60,
-	}),
-);
+		max: 60
+	})
+)
 
 // Security
-app.use(helmet());
-app.use(cors());
-app.use(xssClean());
-app.use(mongoSanitize());
+app.use(helmet())
+app.use(cors())
+app.use(xssClean())
+app.use(mongoSanitize())
 
 // json body and cookie parser
-app.use(express.json());
-app.use(cookieParser(process.env.JWT_SECRET));
+app.use(express.json())
+app.use(cookieParser(process.env.JWT_SECRET))
 
-app.get("/", (req: Request, res: Response) => {
-	res.send("Hello there");
-});
+// Routers
+app.use('/api/v1/auth', authRouter)
 
-const port = process.env.PORT || 3000;
+app.get('/', (_req: Request, res: Response) => {
+	res.send('Hello there')
+})
+
+const port = process.env.PORT || 3000
 const start = async () => {
 	try {
-		await connectDB(process.env.MONGO_URI || "");
-		app.listen(port, () =>
-			console.log(`Server is listening on port ${port}...`),
-		);
+		await connectDB(process.env.MONGO_URI || '')
+		app.listen(port, () => console.log(`Server is listening on port ${port}...`))
 	} catch (error) {
-		console.log(error);
+		console.log(error)
 	}
-};
+}
 
-start();
+start()
