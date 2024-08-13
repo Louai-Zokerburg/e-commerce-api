@@ -1,4 +1,4 @@
-import type { TResponse } from '@/types/response'
+import type { TResponse } from '@/types/custom-response'
 import type { Request, Response } from 'express'
 
 export const notFound = (_: Request, res: Response) => {
