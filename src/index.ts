@@ -11,10 +11,12 @@ import rateLimit from 'express-rate-limit'
 
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import express, { type Request, type Response } from 'express'
+import express from 'express'
 import mongoSanitize from 'express-mongo-sanitize'
 import helmet from 'helmet'
 import xssClean from 'xss-clean'
+import { errorHandlerMiddleware } from './middleware/error-handler'
+import { notFound } from './middleware/not-found'
 
 // Express app
 const app = express()
@@ -44,9 +46,8 @@ app.use(cookieParser(process.env.JWT_SECRET))
 // Routers
 app.use('/api/v1/auth', authRouter)
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello there')
-})
+app.use(notFound)
+app.use(errorHandlerMiddleware)
 
 const port = process.env.PORT || 3000
 const start = async () => {

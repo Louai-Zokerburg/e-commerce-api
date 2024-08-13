@@ -1,14 +1,12 @@
 import { BadRequestError, UnauthenticatedError } from '@/errors'
 import { userModel } from '@/models/user'
 import { attachCookiesToResponse } from '@/utils/auth'
-import type { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 
-import connectDB from '@/utils/db-connect'
+import type { TResponse } from '@/types/response'
+import type { Request, Response } from 'express'
 
 export const register = async (req: Request, res: Response) => {
-  console.log('hello there honey')
-
   const { email, name, password } = req.body
 
   const emailAlreadyExists = await userModel.findOne({ email })
@@ -28,7 +26,15 @@ export const register = async (req: Request, res: Response) => {
   }
 
   attachCookiesToResponse({ res, user: tokenUser })
-  res.status(StatusCodes.CREATED).json({ user: tokenUser })
+
+  const response: TResponse = {
+    success: true,
+    error: undefined,
+    data: {
+      user: tokenUser
+    }
+  }
+  res.status(StatusCodes.CREATED).json(response)
 }
 
 export const login = async (req: Request, res: Response) => {
@@ -53,5 +59,13 @@ export const login = async (req: Request, res: Response) => {
   }
   attachCookiesToResponse({ res, user: tokenUser })
 
-  res.status(StatusCodes.OK).json({ user: tokenUser })
+  const response: TResponse = {
+    success: true,
+    error: undefined,
+    data: {
+      user: tokenUser
+    }
+  }
+
+  res.status(StatusCodes.OK).json(response)
 }
