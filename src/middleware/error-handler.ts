@@ -1,5 +1,5 @@
 import { CustomAPIError } from '@/errors'
-import type { TResponse } from '@/types/response'
+import type { TResponse } from '@/types/custom-response'
 import type { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 

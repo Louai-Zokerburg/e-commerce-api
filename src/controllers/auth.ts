@@ -3,7 +3,7 @@ import { userModel } from '@/models/user'
 import { attachCookiesToResponse } from '@/utils/auth'
 import { StatusCodes } from 'http-status-codes'
 
-import type { TResponse } from '@/types/response'
+import type { TResponse } from '@/types/custom-response'
 import type { Request, Response } from 'express'
 
 export const register = async (req: Request, res: Response) => {
