@@ -46,7 +46,7 @@ app.use(cookieParser(process.env.JWT_SECRET))
 
 // Routers
 app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/user', usersRouter)
+app.use('/api/v1/users', usersRouter)
 
 app.use(notFound)
 app.use(errorHandlerMiddleware)
