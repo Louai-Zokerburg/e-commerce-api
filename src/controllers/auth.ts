@@ -69,3 +69,19 @@ export const login = async (req: Request, res: Response) => {
 
   res.status(StatusCodes.OK).json(response)
 }
+
+export const logout = async (_req: Request, res: Response) => {
+  res.cookie('token', '', {
+    httpOnly: true,
+    expires: new Date(Date.now() + 1)
+  })
+
+  const response: TResponse = {
+    success: true,
+    data: {
+      message: 'User logged out!'
+    },
+    error: undefined
+  }
+  res.status(StatusCodes.OK).json(response)
+}
