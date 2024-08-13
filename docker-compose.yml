@@ -24,5 +24,6 @@ services:
       - mongo-data:/data/db
     environment:
       MONGO_INITDB_DATABASE: ecommerce
+    command: --quiet --logpath /dev/null
 volumes:
   mongo-data:
