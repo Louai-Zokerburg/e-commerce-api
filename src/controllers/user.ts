@@ -1,9 +1,10 @@
-import { BadRequestError, UnauthenticatedError } from '@/errors'
+import { UnauthenticatedError } from '@/errors'
 import { userModel } from '@/models/user'
 import type { TResponse } from '@/types/custom-response'
 import type { AuthRequest } from '@/types/request'
 import { attachCookiesToResponse } from '@/utils/auth'
 import type { Request, Response } from 'express'
+import { matchedData } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
 
 export const getAllUsers = async (_req: Request, res: Response) => {
@@ -32,22 +33,18 @@ export const getCurrentUser = async (req: AuthRequest, res: Response) => {
 }
 
 export const updateUser = async (req: AuthRequest, res: Response) => {
-  const { email, name } = req.body
+  const { email, name } = matchedData(req)
 
-  if (!email || !name) {
-    throw new BadRequestError('Please provide all values')
+  const updatedUser = await userModel.findOneAndUpdate({ _id: req.user?.userId }, { email, name }, { new: true })
+
+  if (!updatedUser) {
+    throw new Error()
   }
-  const user = await userModel.findOne({ _id: req.user!.userId })
-
-  user!.email = email
-  user!.name = name
-
-  await user!.save()
 
   const tokenUser = {
-    name: user!.name,
-    userId: user!._id as string,
-    role: user!.role
+    name: updatedUser.name,
+    userId: updatedUser.id as string,
+    role: updatedUser.role
   }
 
   attachCookiesToResponse({ res, user: tokenUser })
@@ -63,17 +60,16 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
 }
 
 export const updateUserPassword = async (req: AuthRequest, res: Response) => {
-  const { oldPassword, newPassword } = req.body
+  const { oldPassword, newPassword } = matchedData(req)
 
-  if (!oldPassword || !newPassword) {
-    throw new BadRequestError('Please provide both values')
-  }
   const user = await userModel.findOne({ _id: req.user!.userId })
 
   const isPasswordCorrect = await user?.comparePassword(oldPassword)
+
   if (!isPasswordCorrect) {
     throw new UnauthenticatedError('Invalid Credentials')
   }
+
   user!.password = newPassword
 
   await user!.save()
