@@ -1,12 +1,8 @@
 declare module 'express-async-errors' {
-  import type { Request, Response, NextFunction } from 'express'
-
   // This package doesn't export any specific classes or functions,
   // it just augments the existing Express types.
-
   // You don't need to declare any types here since the package
   // modifies the Express types globally.
-
   // You can include a note or comments if necessary
   /**
    * This module augments the Express.js types by adding support for
