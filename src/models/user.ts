@@ -17,7 +17,6 @@ const UserSchema: Schema<TUser> = new mongoose.Schema({
     validate: {
       validator: validator.isEmail,
       message: 'Provide a valid email address'
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } as any
   },
   password: {
