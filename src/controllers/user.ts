@@ -1,4 +1,4 @@
-import { BadRequestError } from '@/errors'
+import { BadRequestError, UnauthenticatedError } from '@/errors'
 import { userModel } from '@/models/user'
 import type { TResponse } from '@/types/custom-response'
 import type { AuthRequest } from '@/types/request'
@@ -56,6 +56,32 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
     success: true,
     data: {
       user: tokenUser
+    },
+    error: undefined
+  }
+  res.status(StatusCodes.OK).json(response)
+}
+
+export const updateUserPassword = async (req: AuthRequest, res: Response) => {
+  const { oldPassword, newPassword } = req.body
+
+  if (!oldPassword || !newPassword) {
+    throw new BadRequestError('Please provide both values')
+  }
+  const user = await userModel.findOne({ _id: req.user!.userId })
+
+  const isPasswordCorrect = await user?.comparePassword(oldPassword)
+  if (!isPasswordCorrect) {
+    throw new UnauthenticatedError('Invalid Credentials')
+  }
+  user!.password = newPassword
+
+  await user!.save()
+
+  const response: TResponse = {
+    success: true,
+    data: {
+      message: 'Success! Password Updated.'
     },
     error: undefined
   }
