@@ -5,16 +5,11 @@ import { StatusCodes } from 'http-status-codes'
 
 import type { TResponse } from '@/types/custom-response'
 import type { Request, Response } from 'express'
+import { matchedData } from 'express-validator'
 
 export const register = async (req: Request, res: Response) => {
-  const { email, name, password } = req.body
+  const { name, email, password } = matchedData(req)
 
-  const emailAlreadyExists = await userModel.findOne({ email })
-  if (emailAlreadyExists) {
-    throw new BadRequestError('Email already exists')
-  }
-
-  // first registered user is an admin
   const isFirstAccount = (await userModel.countDocuments({})) === 0
   const role = isFirstAccount ? 'admin' : 'user'
 
@@ -29,7 +24,7 @@ export const register = async (req: Request, res: Response) => {
 
   const response: TResponse = {
     success: true,
-    error: undefined,
+    errors: undefined,
     data: {
       user: tokenUser
     }
@@ -61,7 +56,7 @@ export const login = async (req: Request, res: Response) => {
 
   const response: TResponse = {
     success: true,
-    error: undefined,
+    errors: undefined,
     data: {
       user: tokenUser
     }
@@ -81,7 +76,7 @@ export const logout = async (_req: Request, res: Response) => {
     data: {
       message: 'User logged out!'
     },
-    error: undefined
+    errors: undefined
   }
   res.status(StatusCodes.OK).json(response)
 }

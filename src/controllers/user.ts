@@ -14,7 +14,7 @@ export const getAllUsers = async (_req: Request, res: Response) => {
     data: {
       users
     },
-    error: undefined
+    errors: undefined
   }
 
   res.status(StatusCodes.OK).json(response)
@@ -26,7 +26,7 @@ export const getCurrentUser = async (req: AuthRequest, res: Response) => {
     data: {
       user: req.user
     },
-    error: undefined
+    errors: undefined
   }
   res.status(StatusCodes.OK).json(response)
 }
@@ -57,7 +57,7 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
     data: {
       user: tokenUser
     },
-    error: undefined
+    errors: undefined
   }
   res.status(StatusCodes.OK).json(response)
 }
@@ -83,7 +83,7 @@ export const updateUserPassword = async (req: AuthRequest, res: Response) => {
     data: {
       message: 'Success! Password Updated.'
     },
-    error: undefined
+    errors: undefined
   }
   res.status(StatusCodes.OK).json(response)
 }

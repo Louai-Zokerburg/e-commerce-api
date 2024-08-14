@@ -1,7 +1,7 @@
 export interface TResponse {
   success: boolean
-  error?: {
+  errors?: {
     message: string
-  }
+  }[]
   data?: any
 }
