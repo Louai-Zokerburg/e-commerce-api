@@ -1,7 +1,7 @@
 import { getAllUsers, getCurrentUser, updateUser, updateUserPassword } from '@/controllers/user'
 import { authenticateUser, authorizePermissions } from '@/middleware/auth'
 import { validatorMiddleware } from '@/middleware/validator'
-import { updatePasswordValidationSchema, updateUserValidationSchema } from '@/schemas/auth'
+import { updatePasswordValidationSchema, updateUserValidationSchema } from '@/schemas/user'
 import express from 'express'
 
 export const router = express.Router()
