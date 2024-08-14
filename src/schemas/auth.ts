@@ -2,7 +2,7 @@ import { BadRequestError } from '@/errors'
 import { userModel } from '@/models/user'
 import { checkSchema } from 'express-validator'
 
-export const registerSchema = checkSchema({
+export const registerValidationSchema = checkSchema({
   name: {
     in: ['body'],
     trim: true,
@@ -30,6 +30,23 @@ export const registerSchema = checkSchema({
         return true
       }
     }
+  },
+  password: {
+    in: ['body'],
+    isLength: {
+      options: { min: 6 },
+      errorMessage: 'Password must be at least 6 characters long'
+    }
+  }
+})
+
+export const loginValidationSchema = checkSchema({
+  email: {
+    in: ['body'],
+    isEmail: {
+      errorMessage: 'Invalid email address'
+    },
+    normalizeEmail: true
   },
   password: {
     in: ['body'],

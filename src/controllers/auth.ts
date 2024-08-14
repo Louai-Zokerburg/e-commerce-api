@@ -1,4 +1,4 @@
-import { BadRequestError, UnauthenticatedError } from '@/errors'
+import { UnauthenticatedError } from '@/errors'
 import { userModel } from '@/models/user'
 import { attachCookiesToResponse } from '@/utils/auth'
 import { StatusCodes } from 'http-status-codes'
@@ -33,25 +33,26 @@ export const register = async (req: Request, res: Response) => {
 }
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body
+  const { email, password } = matchedData(req)
 
-  if (!email || !password) {
-    throw new BadRequestError('Please provide email and password')
-  }
   const user = await userModel.findOne({ email })
 
   if (!user) {
     throw new UnauthenticatedError('Invalid Credentials')
   }
+
   const isPasswordCorrect = await user.comparePassword(password)
+
   if (!isPasswordCorrect) {
     throw new UnauthenticatedError('Invalid Credentials')
   }
+
   const tokenUser = {
     name: user.name,
     userId: user._id as string,
     role: user.role
   }
+
   attachCookiesToResponse({ res, user: tokenUser })
 
   const response: TResponse = {
@@ -78,5 +79,6 @@ export const logout = async (_req: Request, res: Response) => {
     },
     errors: undefined
   }
+
   res.status(StatusCodes.OK).json(response)
 }
