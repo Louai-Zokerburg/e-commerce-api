@@ -1,4 +1,4 @@
-import { createProduct } from '@/controllers/product'
+import { createProduct, getAllProducts } from '@/controllers/product'
 import { authenticateUser, authorizePermissions } from '@/middleware/auth'
 import { validatorMiddleware } from '@/middleware/validator'
 import { productValidationSchema } from '@/schemas/product'
@@ -14,3 +14,4 @@ router
     validatorMiddleware,
     createProduct
   )
+  .get(getAllProducts)
