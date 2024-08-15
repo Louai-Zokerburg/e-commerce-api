@@ -1,6 +1,6 @@
 import { checkSchema } from 'express-validator'
 
-export const productValidationSchema = checkSchema({
+export const createProductValidationSchema = checkSchema({
   name: {
     in: ['body'],
     trim: true,
@@ -113,5 +113,15 @@ export const productValidationSchema = checkSchema({
       errorMessage: 'Number of reviews must be a non-negative integer'
     },
     toInt: true
+  }
+})
+
+export const getProductValidationSchema = checkSchema({
+  id: {
+    in: ['params'],
+    notEmpty: {
+      errorMessage: 'Product id must be provided'
+    },
+    trim: true
   }
 })

@@ -1,3 +1,4 @@
+import { NotFoundError } from '@/errors'
 import { productModel } from '@/models/product'
 import type { TResponse } from '@/types/custom-response'
 import type { AuthRequest } from '@/types/request'
@@ -29,6 +30,26 @@ export const getAllProducts = async (_req: Request, res: Response) => {
     data: {
       products,
       count: products.length
+    },
+    errors: undefined
+  }
+
+  res.status(StatusCodes.OK).json(response)
+}
+
+export const getSingleProduct = async (req: Request, res: Response) => {
+  const { id } = matchedData(req)
+
+  const product = await productModel.findOne({ _id: id }).populate('reviews')
+
+  if (!product) {
+    throw new NotFoundError(`No product with id : ${id}`)
+  }
+
+  const response: TResponse = {
+    success: true,
+    data: {
+      product
     },
     errors: undefined
   }
