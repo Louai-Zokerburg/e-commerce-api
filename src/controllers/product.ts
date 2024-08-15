@@ -40,7 +40,7 @@ export const getAllProducts = async (_req: Request, res: Response) => {
 export const getSingleProduct = async (req: Request, res: Response) => {
   const { id } = matchedData(req)
 
-  const product = await productModel.findOne({ _id: id }).populate('reviews')
+  const product = await productModel.findOne({ _id: id })
 
   if (!product) {
     throw new NotFoundError(`No product with id : ${id}`)
@@ -48,6 +48,30 @@ export const getSingleProduct = async (req: Request, res: Response) => {
 
   const response: TResponse = {
     success: true,
+    data: {
+      product
+    },
+    errors: undefined
+  }
+
+  res.status(StatusCodes.OK).json(response)
+}
+
+export const updateProduct = async (req: Request, res: Response) => {
+  const { id, ...updateProductData } = matchedData(req)
+
+  const product = await productModel.findOneAndUpdate({ _id: id }, updateProductData, {
+    new: true,
+    runValidators: true
+  })
+
+  if (!product) {
+    throw new NotFoundError(`No product with id : ${id}`)
+  }
+
+  const response: TResponse = {
+    success: true,
+
     data: {
       product
     },
