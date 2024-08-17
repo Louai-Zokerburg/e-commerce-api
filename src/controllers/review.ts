@@ -57,3 +57,23 @@ export const getAllReviews = async (_req: Request, res: Response) => {
 
   res.status(StatusCodes.OK).json(response)
 }
+
+export const getSingleReview = async (req: Request, res: Response) => {
+  const { id: reviewId } = matchedData(req)
+
+  const review = await reviewModel.findOne({ _id: reviewId })
+
+  if (!review) {
+    throw new NotFoundError(`No review with id ${reviewId}`)
+  }
+
+  const response: TResponse = {
+    success: true,
+    data: {
+      review
+    },
+    errors: undefined
+  }
+
+  res.status(StatusCodes.OK).json(response)
+}

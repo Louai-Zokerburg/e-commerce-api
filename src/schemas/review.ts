@@ -56,3 +56,16 @@ export const createReviewValidationSchema = checkSchema({
     }
   }
 })
+
+export const getSingleReviewsSchema = checkSchema({
+  id: {
+    in: ['params'],
+    custom: {
+      options: value => mongoose.Types.ObjectId.isValid(value),
+      errorMessage: 'Invalid review ID'
+    },
+    notEmpty: {
+      errorMessage: 'Product id must be provided'
+    }
+  }
+})
