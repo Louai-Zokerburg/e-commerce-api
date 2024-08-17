@@ -126,3 +126,20 @@ export const deleteReview = async (req: CustomRequest, res: Response) => {
 
   res.status(StatusCodes.OK).json(response)
 }
+
+export const getSingleProductReviews = async (req: Request, res: Response) => {
+  const { id: productId } = matchedData(req)
+
+  const reviews = await reviewModel.find({ product: productId })
+
+  const response: TResponse = {
+    success: true,
+    data: {
+      reviews,
+      count: reviews.length
+    },
+    errors: undefined
+  }
+
+  res.status(StatusCodes.OK).json(response)
+}

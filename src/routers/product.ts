@@ -6,6 +6,7 @@ import {
   updateProduct,
   uploadImage
 } from '@/controllers/product'
+import { getSingleProductReviews } from '@/controllers/review'
 import { authenticateUser, authorizePermissions } from '@/middleware/auth'
 import { validatorMiddleware } from '@/middleware/validator'
 import {
@@ -14,6 +15,7 @@ import {
   imageUploadSchemaValidation,
   updateProductValidationSchema
 } from '@/schemas/product'
+import { getSingleReviewsSchema } from '@/schemas/review'
 import express from 'express'
 
 export const router = express.Router()
@@ -55,3 +57,5 @@ router
     validatorMiddleware,
     deleteProduct
   )
+
+router.route('/:id/reviews').get(getSingleReviewsSchema, validatorMiddleware, getSingleProductReviews)
