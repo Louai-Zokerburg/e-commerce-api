@@ -69,3 +69,51 @@ export const getSingleReviewsSchema = checkSchema({
     }
   }
 })
+
+export const updateReviewSchemaValidation = checkSchema({
+  // Validation for `reviewId` in URL params
+  id: {
+    in: ['params'],
+    custom: {
+      options: value => mongoose.Types.ObjectId.isValid(value),
+      errorMessage: 'Invalid review ID'
+    },
+    notEmpty: {
+      errorMessage: 'Review ID is required'
+    }
+  },
+  // Validation for request body
+  rating: {
+    in: ['body'],
+    isInt: {
+      options: { min: 1, max: 5 },
+      errorMessage: 'Rating must be an integer between 1 and 5'
+    },
+    notEmpty: {
+      errorMessage: 'Please provide rating'
+    }
+  },
+  title: {
+    in: ['body'],
+    isString: {
+      errorMessage: 'Title must be a string'
+    },
+    trim: true,
+    notEmpty: {
+      errorMessage: 'Please provide review title'
+    },
+    isLength: {
+      options: { max: 100 },
+      errorMessage: 'Title must be at most 100 characters long'
+    }
+  },
+  comment: {
+    in: ['body'],
+    isString: {
+      errorMessage: 'Comment must be a string'
+    },
+    notEmpty: {
+      errorMessage: 'Please provide review text'
+    }
+  }
+})

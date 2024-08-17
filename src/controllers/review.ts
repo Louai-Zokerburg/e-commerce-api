@@ -3,6 +3,7 @@ import { productModel } from '@/models/product'
 import { reviewModel } from '@/models/review'
 import type { TResponse } from '@/types/custom-response'
 import type { CustomRequest } from '@/types/request'
+import { checkPermissions } from '@/utils/auth'
 import type { Request, Response } from 'express'
 import { matchedData } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
@@ -71,6 +72,30 @@ export const getSingleReview = async (req: Request, res: Response) => {
     success: true,
     data: {
       review
+    },
+    errors: undefined
+  }
+
+  res.status(StatusCodes.OK).json(response)
+}
+
+export const updateReview = async (req: CustomRequest, res: Response) => {
+  const { id: reviewId, ...updateReview } = matchedData(req)
+
+  const review = await reviewModel.findOne({ _id: reviewId })
+
+  if (!review) {
+    throw new NotFoundError(`No review with id ${reviewId}`)
+  }
+
+  checkPermissions(req.user!, review.user)
+
+  const updatedReview = await reviewModel.findOneAndUpdate({ _id: reviewId }, updateReview, { new: true })
+
+  const response: TResponse = {
+    success: true,
+    data: {
+      review: updatedReview
     },
     errors: undefined
   }
