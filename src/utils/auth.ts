@@ -2,7 +2,7 @@ import { UnauthorizedError } from '@/errors'
 import type { TTokenUser, TUserPayload } from '@/types/user'
 import type { Response } from 'express'
 import jwt from 'jsonwebtoken'
-import mongoose from 'mongoose'
+import type mongoose from 'mongoose'
 
 export const validateToken = ({ token }: { token: string }) => jwt.verify(token, process.env.JWT_SECRET || '')
 

@@ -102,3 +102,27 @@ export const updateReview = async (req: CustomRequest, res: Response) => {
 
   res.status(StatusCodes.OK).json(response)
 }
+
+export const deleteReview = async (req: CustomRequest, res: Response) => {
+  const { id: reviewId } = matchedData(req)
+
+  const review = await reviewModel.findOne({ _id: reviewId })
+
+  if (!review) {
+    throw new NotFoundError(`No review with id ${reviewId}`)
+  }
+
+  checkPermissions(req.user!, review.user)
+
+  const deletedReview = await reviewModel.findOneAndDelete({ _id: reviewId }, { new: true })
+
+  const response: TResponse = {
+    success: true,
+    data: {
+      review: deletedReview
+    },
+    errors: undefined
+  }
+
+  res.status(StatusCodes.OK).json(response)
+}

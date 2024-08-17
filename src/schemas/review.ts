@@ -117,3 +117,16 @@ export const updateReviewSchemaValidation = checkSchema({
     }
   }
 })
+
+export const deleteReviewsSchema = checkSchema({
+  id: {
+    in: ['params'],
+    custom: {
+      options: value => mongoose.Types.ObjectId.isValid(value),
+      errorMessage: 'Invalid review ID'
+    },
+    notEmpty: {
+      errorMessage: 'Product id must be provided'
+    }
+  }
+})
