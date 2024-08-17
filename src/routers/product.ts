@@ -1,9 +1,17 @@
-import { createProduct, getAllProducts, getSingleProduct, updateProduct } from '@/controllers/product'
+import {
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  getSingleProduct,
+  updateProduct,
+  uploadImage
+} from '@/controllers/product'
 import { authenticateUser, authorizePermissions } from '@/middleware/auth'
 import { validatorMiddleware } from '@/middleware/validator'
 import {
   createProductValidationSchema,
   getProductValidationSchema,
+  imageUploadSchemaValidation,
   updateProductValidationSchema
 } from '@/schemas/product'
 import express from 'express'
@@ -21,6 +29,15 @@ router
   .get(getAllProducts)
 
 router
+  .route('/image')
+  .post(
+    [authenticateUser, authorizePermissions(['admin'])],
+    imageUploadSchemaValidation,
+    validatorMiddleware,
+    uploadImage
+  )
+
+router
   .route('/:id')
   .get(getProductValidationSchema, validatorMiddleware, getSingleProduct)
   .post(
@@ -30,4 +47,11 @@ router
     updateProductValidationSchema,
     validatorMiddleware,
     updateProduct
+  )
+  .delete(
+    authenticateUser,
+    authorizePermissions(['admin']),
+    getProductValidationSchema,
+    validatorMiddleware,
+    deleteProduct
   )

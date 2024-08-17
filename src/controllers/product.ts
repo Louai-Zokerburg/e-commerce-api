@@ -1,12 +1,14 @@
 import { NotFoundError } from '@/errors'
 import { productModel } from '@/models/product'
 import type { TResponse } from '@/types/custom-response'
-import type { AuthRequest } from '@/types/request'
+import type { CustomRequest } from '@/types/request'
 import type { Request, Response } from 'express'
+import fileUpload from 'express-fileupload'
 import { matchedData } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
+import path from 'node:path'
 
-export const createProduct = async (req: AuthRequest, res: Response) => {
+export const createProduct = async (req: CustomRequest, res: Response) => {
   const productData = matchedData(req)
 
   console.log(productData)
@@ -74,6 +76,46 @@ export const updateProduct = async (req: Request, res: Response) => {
 
     data: {
       product
+    },
+    errors: undefined
+  }
+
+  res.status(StatusCodes.OK).json(response)
+}
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  const { id } = matchedData(req)
+
+  const product = await productModel.findOneAndDelete({ _id: id }, { new: true })
+
+  if (!product) {
+    throw new NotFoundError(`No product with id : ${id}`)
+  }
+
+  const response: TResponse = {
+    success: true,
+    data: {
+      product
+    },
+    errors: undefined
+  }
+
+  res.status(StatusCodes.OK).json(response)
+}
+
+export const uploadImage = async (req: Request, res: Response) => {
+  const productImage = req.files!.image as fileUpload.UploadedFile
+
+  const imagePath = path.join(__dirname, `../../public/uploads/${productImage.name}`)
+
+  console.log(imagePath)
+
+  await productImage.mv(imagePath)
+
+  const response: TResponse = {
+    success: true,
+    data: {
+      image: `Image uploaded successfully at: /uploads/${productImage.name}`
     },
     errors: undefined
   }

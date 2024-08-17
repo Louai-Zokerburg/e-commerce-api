@@ -1,10 +1,10 @@
 import { UnauthenticatedError, UnauthorizedError } from '@/errors'
-import type { AuthRequest } from '@/types/request'
+import type { CustomRequest } from '@/types/request'
 import { validateToken } from '@/utils/auth'
 import type { NextFunction, Response } from 'express'
 import type { JwtPayload } from 'jsonwebtoken'
 
-export const authenticateUser = async (req: AuthRequest, _res: Response, next: NextFunction) => {
+export const authenticateUser = async (req: CustomRequest, _res: Response, next: NextFunction) => {
   const token = req.signedCookies.token
 
   if (!token) {
@@ -21,7 +21,7 @@ export const authenticateUser = async (req: AuthRequest, _res: Response, next: N
 }
 
 export const authorizePermissions = (roles: string[]) => {
-  return (req: AuthRequest, _res: Response, next: NextFunction) => {
+  return (req: CustomRequest, _res: Response, next: NextFunction) => {
     if (!roles.includes(req.user?.role as string)) {
       throw new UnauthorizedError('Unauthorized to access this route')
     }

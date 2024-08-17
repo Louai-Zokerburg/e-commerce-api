@@ -254,3 +254,31 @@ export const updateProductValidationSchema = checkSchema({
     toInt: true
   }
 })
+
+export const imageUploadSchemaValidation = checkSchema({
+  image: {
+    custom: {
+      options: (_value: any, { req }: { req: any }) => {
+        // Ensure that a file has been uploaded
+
+        if (!req.files) {
+          throw new Error('File must be uploaded')
+        }
+
+        // Check file type, size, etc.
+        const image = req.files.image
+
+        if (!image.mimetype.startsWith('image')) {
+          throw new Error('Invalid file type. Only JPEG and PNG are allowed.')
+        }
+
+        if (image.size > 50 * 1024 * 1024) {
+          // 5MB limit
+          throw new Error('File size must be less than 5MB')
+        }
+
+        return true // File is valid
+      }
+    }
+  }
+})

@@ -1,7 +1,7 @@
 import { UnauthenticatedError } from '@/errors'
 import { userModel } from '@/models/user'
 import type { TResponse } from '@/types/custom-response'
-import type { AuthRequest } from '@/types/request'
+import type { CustomRequest } from '@/types/request'
 import { attachCookiesToResponse } from '@/utils/auth'
 import type { Request, Response } from 'express'
 import { matchedData } from 'express-validator'
@@ -21,7 +21,7 @@ export const getAllUsers = async (_req: Request, res: Response) => {
   res.status(StatusCodes.OK).json(response)
 }
 
-export const getCurrentUser = async (req: AuthRequest, res: Response) => {
+export const getCurrentUser = async (req: CustomRequest, res: Response) => {
   const response: TResponse = {
     success: true,
     data: {
@@ -32,7 +32,7 @@ export const getCurrentUser = async (req: AuthRequest, res: Response) => {
   res.status(StatusCodes.OK).json(response)
 }
 
-export const updateUser = async (req: AuthRequest, res: Response) => {
+export const updateUser = async (req: CustomRequest, res: Response) => {
   const { email, name } = matchedData(req)
 
   const updatedUser = await userModel.findOneAndUpdate({ _id: req.user?.userId }, { email, name }, { new: true })
@@ -59,7 +59,7 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
   res.status(StatusCodes.OK).json(response)
 }
 
-export const updateUserPassword = async (req: AuthRequest, res: Response) => {
+export const updateUserPassword = async (req: CustomRequest, res: Response) => {
   const { oldPassword, newPassword } = matchedData(req)
 
   const user = await userModel.findOne({ _id: req.user!.userId })

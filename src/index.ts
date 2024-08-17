@@ -14,6 +14,7 @@ import rateLimit from 'express-rate-limit'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express from 'express'
+import fileUpload from 'express-fileupload'
 import mongoSanitize from 'express-mongo-sanitize'
 import helmet from 'helmet'
 import xssClean from 'xss-clean'
@@ -44,6 +45,16 @@ app.use(mongoSanitize())
 // json body and cookie parser
 app.use(express.json())
 app.use(cookieParser(process.env.JWT_SECRET))
+
+app.use(express.static('../public'))
+app.use(
+  fileUpload({
+    createParentPath: true,
+    limits: {
+      fileSize: 50 * 1024 * 1024 // 50 mb
+    }
+  })
+)
 
 // Routers
 app.use('/api/v1/auth', authRouter)
