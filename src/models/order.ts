@@ -53,4 +53,4 @@ const OrderSchema: Schema<TOrder> = new Schema(
   { timestamps: true }
 )
 
-export default mongoose.model<TOrder>('Order', OrderSchema)
+export const orderModel = mongoose.model<TOrder>('Order', OrderSchema)

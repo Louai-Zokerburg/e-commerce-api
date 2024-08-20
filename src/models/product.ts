@@ -63,7 +63,7 @@ const ProductSchema: Schema<TProduct> = new Schema(
       default: 0
     },
     user: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
     }

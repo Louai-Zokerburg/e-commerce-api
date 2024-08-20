@@ -6,6 +6,7 @@ import 'express-async-errors'
 import morgan from 'morgan'
 
 import { router as authRouter } from '@/routers/auth'
+import { router as orderRouter } from '@/routers/order'
 import { router as productRouter } from '@/routers/product'
 import { router as reviewRouter } from '@/routers/review'
 import { router as usersRouter } from '@/routers/user'
@@ -63,6 +64,7 @@ app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/users', usersRouter)
 app.use('/api/v1/products', productRouter)
 app.use('/api/v1/reviews', reviewRouter)
+app.use('/api/v1/orders', orderRouter)
 
 app.use(notFound)
 app.use(errorHandlerMiddleware)

@@ -26,7 +26,7 @@ export const attachCookiesToResponse = ({ res, user }: { res: Response; user: TT
   })
 }
 
-export const checkPermissions = (requestUser: TUserPayload, resourceUserId: mongoose.ObjectId) => {
+export const checkPermissions = (requestUser: TUserPayload, resourceUserId: mongoose.Schema.Types.ObjectId) => {
   if (requestUser.role === 'admin') return
 
   if (requestUser.userId === resourceUserId.toString()) return

@@ -1,11 +1,12 @@
-import type { Document, Types } from 'mongoose'
+import type mongoose from 'mongoose'
+import type { Document } from 'mongoose'
 
 export interface TSingleOrderItem {
   name: string
   image: string
   price: number
   amount: number
-  product: Types.ObjectId
+  product: mongoose.Schema.Types.ObjectId
 }
 
 export interface TOrder extends Document {
@@ -15,7 +16,7 @@ export interface TOrder extends Document {
   total: number
   orderItems: TSingleOrderItem[]
   status: 'pending' | 'failed' | 'paid' | 'delivered' | 'canceled'
-  user: Types.ObjectId
+  user: mongoose.Schema.Types.ObjectId
   clientSecret: string
   paymentIntentId?: string
   createdAt?: Date
