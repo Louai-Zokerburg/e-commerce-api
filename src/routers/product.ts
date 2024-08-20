@@ -21,7 +21,7 @@ import express from 'express'
 export const router = express.Router()
 
 router
-  .route('/')
+  .route('/products')
   .post(
     [authenticateUser, authorizePermissions(['admin'])],
     createProductValidationSchema,
@@ -31,7 +31,7 @@ router
   .get(getAllProducts)
 
 router
-  .route('/image')
+  .route('/products/image')
   .post(
     [authenticateUser, authorizePermissions(['admin'])],
     imageUploadSchemaValidation,
@@ -40,7 +40,7 @@ router
   )
 
 router
-  .route('/:id')
+  .route('/products/:id')
   .get(getProductValidationSchema, validatorMiddleware, getSingleProduct)
   .post(
     authenticateUser,
@@ -58,4 +58,4 @@ router
     deleteProduct
   )
 
-router.route('/:id/reviews').get(getSingleReviewsSchema, validatorMiddleware, getSingleProductReviews)
+router.route('/products/:id/reviews').get(getSingleReviewsSchema, validatorMiddleware, getSingleProductReviews)

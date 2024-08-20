@@ -7,13 +7,13 @@ import express from 'express'
 export const router = express.Router()
 
 router
-  .route('/')
+  .route('/orders')
   .post(authenticateUser, createOrderSchema, validatorMiddleware, createOrder)
   .get(authenticateUser, authorizePermissions(['admin']), getAllOrders)
 
-router.route('/my-orders').get(authenticateUser, getCurrentUserOrders)
+router.route('/orders/my-orders').get(authenticateUser, getCurrentUserOrders)
 
 router
-  .route('/:id')
+  .route('/orders/:id')
   .get(authenticateUser, getSingleOrder)
   .patch(authenticateUser, updateOrderSchema, validatorMiddleware, updateOrder)

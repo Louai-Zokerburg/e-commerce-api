@@ -5,6 +5,6 @@ import express from 'express'
 
 export const router = express.Router()
 
-router.post('/register', registerValidationSchema, validatorMiddleware, register)
-router.post('/login', loginValidationSchema, validatorMiddleware, login)
-router.get('/logout', logout)
+router.post('/auth/register', registerValidationSchema, validatorMiddleware, register)
+router.post('/auth/login', loginValidationSchema, validatorMiddleware, login)
+router.get('/auth/logout', logout)

@@ -12,12 +12,12 @@ import express from 'express'
 export const router = express.Router()
 
 router
-  .route('/')
+  .route('/reviews/')
   .post(authenticateUser, createReviewValidationSchema, validatorMiddleware, createReview)
   .get(getAllReviews)
 
 router
-  .route('/:id')
+  .route('/reviews/:id')
   .get(getSingleReviewsSchema, validatorMiddleware, getSingleReview)
   .patch(authenticateUser, updateReviewSchemaValidation, validatorMiddleware, updateReview)
   .delete(authenticateUser, deleteReviewsSchema, validatorMiddleware, deleteReview)

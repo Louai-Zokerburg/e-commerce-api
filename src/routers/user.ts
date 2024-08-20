@@ -6,9 +6,9 @@ import express from 'express'
 
 export const router = express.Router()
 
-router.route('/').get(authenticateUser, authorizePermissions(['admin']), getAllUsers)
-router.route('/me').get(authenticateUser, getCurrentUser)
-router.route('/update-user').patch(authenticateUser, updateUserValidationSchema, validatorMiddleware, updateUser)
+router.route('/users').get(authenticateUser, authorizePermissions(['admin']), getAllUsers)
+router.route('/users/me').get(authenticateUser, getCurrentUser)
+router.route('/users/update-user').patch(authenticateUser, updateUserValidationSchema, validatorMiddleware, updateUser)
 router
-  .route('/update-password')
+  .route('/users/update-password')
   .patch(authenticateUser, updatePasswordValidationSchema, validatorMiddleware, updateUserPassword)
