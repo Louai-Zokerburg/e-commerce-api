@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { NotFoundError } from '@/errors'
 import { productModel } from '@/models/product'
 import type { TResponse } from '@/types/custom-response'
@@ -6,7 +7,6 @@ import type { Request, Response } from 'express'
 import type fileUpload from 'express-fileupload'
 import { matchedData } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
-import path from 'node:path'
 
 export const createProduct = async (req: CustomRequest, res: Response) => {
   const productData = matchedData(req)

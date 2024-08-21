@@ -7,7 +7,7 @@ import morgan from 'morgan'
 
 import swaggerUi from 'swagger-ui-express'
 
-const swaggerFile = require('@/test.json')
+const swaggerFile = require('@/swagger_docs.json')
 
 import { router as authRouter } from '@/routers/auth'
 import { router as orderRouter } from '@/routers/order'
